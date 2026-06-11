@@ -1,0 +1,457 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.9), rgba(255,255,255,0) 40%),
+    linear-gradient(180deg, #d8f1ff 0%, #f7fbff 55%, #d9f0cf 100%);
+  font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+  color: #1f2a37;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding: 18px;
+}
+
+.game-shell {
+  width: min(1080px, 100%);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.topbar h1 {
+  margin: 0 0 4px;
+  font-size: clamp(26px, 4vw, 42px);
+  letter-spacing: 2px;
+}
+
+.topbar p {
+  margin: 0;
+  color: #4b5563;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 22px;
+  background: linear-gradient(180deg, #0f172a, #111827);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.24);
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+button:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.28);
+}
+
+.primary-btn {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+}
+
+.stage-wrap {
+  position: relative;
+  overflow: hidden;
+  border: 6px solid #111827;
+  border-radius: 28px;
+  background: #bde9ff;
+  box-shadow: 0 18px 50px rgba(17, 24, 39, 0.2);
+  touch-action: none;
+  user-select: none;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: auto;
+}
+
+.panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(620px, calc(100% - 40px));
+  max-width: calc(100% - 40px);
+  padding: 28px;
+  text-align: center;
+  border: 4px solid #111827;
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.93), rgba(255,255,255,0.98));
+  box-shadow: 0 20px 45px rgba(17, 24, 39, 0.24);
+  z-index: 5;
+  backdrop-filter: blur(6px);
+}
+
+.panel h2 {
+  margin: 0 0 14px;
+  font-size: 36px;
+}
+
+.panel p {
+  margin: 8px 0;
+  line-height: 1.7;
+}
+
+.panel .note {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.start-panel {
+  background:
+    radial-gradient(circle at top, rgba(56,189,248,0.18), rgba(255,255,255,0) 35%),
+    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.98));
+}
+
+.title-logo {
+  width: min(100%, 540px);
+  display: block;
+  margin: 0 auto 8px;
+  filter: drop-shadow(0 12px 18px rgba(17,24,39,0.14));
+}
+
+.start-desc {
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.feature-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+
+.feature-badges span {
+  padding: 8px 14px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.game-over-panel {
+  border-color: #7f1d1d;
+  background:
+    radial-gradient(circle at top, rgba(248,113,113,0.18), rgba(255,255,255,0) 42%),
+    linear-gradient(180deg, rgba(255,245,245,0.96), rgba(255,255,255,0.98));
+  animation: popIn 0.35s ease;
+}
+
+.game-over-panel h2 {
+  font-size: 42px;
+  color: #991b1b;
+  text-shadow: 0 6px 16px rgba(220, 38, 38, 0.14);
+}
+
+.game-over-burst {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+  color: white;
+  font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 0 10px 24px rgba(220,38,38,0.22);
+  animation: pulseGlow 1.2s ease-in-out infinite;
+}
+
+.mobile-controls {
+  display: none;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.mobile-controls button {
+  width: min(42vw, 180px);
+  padding: 16px 20px;
+  font-size: 18px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#jumpBtn {
+  background: linear-gradient(180deg, #ef4444, #dc2626);
+}
+
+#duckBtn {
+  background: linear-gradient(180deg, #3b82f6, #2563eb);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(220,38,38,0.22); }
+  50% { transform: scale(1.04); box-shadow: 0 12px 28px rgba(220,38,38,0.34); }
+}
+
+@media (max-width: 760px) {
+  body {
+    padding: 10px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .topbar p {
+    display: none;
+  }
+
+  .topbar h1 {
+    font-size: 28px;
+  }
+
+  #restartBtn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .stage-wrap {
+    border-width: 4px;
+    border-radius: 20px;
+  }
+
+  .panel {
+    padding: 20px 16px;
+  }
+
+  .panel h2 {
+    font-size: 28px;
+  }
+
+  .game-over-panel h2 {
+    font-size: 34px;
+  }
+
+  .feature-badges {
+    gap: 8px;
+  }
+
+  .feature-badges span {
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+
+/* 手机竖屏适配：网页不能强制系统横屏，所以这里把游戏整体旋转 90°，模拟横屏体验 */
+@media (max-width: 760px) and (orientation: portrait) {
+  html,
+  body {
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 0;
+    background: linear-gradient(180deg, #d8f1ff 0%, #eaf7ff 55%, #d9f0cf 100%);
+  }
+
+  body {
+    display: block;
+    position: fixed;
+    inset: 0;
+  }
+
+  .game-shell {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 100vh;
+    height: 100vw;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .topbar {
+    display: none;
+  }
+
+  .stage-wrap {
+    width: min(calc(100vh - 20px), calc((100vw - 62px) * 16 / 9));
+    height: min(calc((100vh - 20px) * 9 / 16), calc(100vw - 62px));
+    border-width: 4px;
+    border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(17, 24, 39, 0.22);
+    flex: 0 0 auto;
+  }
+
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-controls {
+    display: flex;
+    margin-top: 0;
+    gap: 14px;
+    flex: 0 0 auto;
+  }
+
+  .mobile-controls button {
+    width: auto;
+    min-width: 118px;
+    padding: 10px 18px;
+    font-size: 15px;
+    box-shadow: 0 6px 16px rgba(17, 24, 39, 0.2);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .panel {
+    width: calc(100% - 24px);
+    max-width: 500px;
+    padding: 14px 14px 16px;
+    border-width: 3px;
+    border-radius: 20px;
+  }
+
+  .title-logo {
+    width: min(82%, 360px);
+    max-height: 90px;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+
+  .start-desc {
+    margin: 4px 0 8px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .feature-badges {
+    display: none;
+  }
+
+  .panel .note {
+    display: none;
+  }
+
+  .panel h2 {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .game-over-panel h2 {
+    font-size: 32px;
+  }
+
+  .game-over-burst {
+    padding: 6px 14px;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .panel button {
+    padding: 10px 20px;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+}
+
+/* 手机本来就是横屏时，不旋转，但压缩边距和按钮，让画面更满 */
+@media (max-height: 520px) and (orientation: landscape) {
+  body {
+    padding: 6px;
+    overflow: hidden;
+  }
+
+  .game-shell {
+    width: 100%;
+  }
+
+  .topbar {
+    display: none;
+  }
+
+  .stage-wrap {
+    width: min(100%, calc(100vh * 16 / 9 - 16px));
+    margin: 0 auto;
+    border-width: 4px;
+    border-radius: 18px;
+  }
+
+  .mobile-controls {
+    display: flex;
+    margin-top: 6px;
+  }
+
+  .mobile-controls button {
+    padding: 9px 18px;
+    font-size: 14px;
+    width: auto;
+    min-width: 110px;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .panel .note {
+    display: none;
+  }
+
+  .feature-badges {
+    display: none;
+  }
+
+  .title-logo {
+    width: min(82%, 390px);
+    max-height: 100px;
+    object-fit: contain;
+  }
+}
