@@ -9,8 +9,10 @@
   const startBtn = document.getElementById('startBtn');
   const againBtn = document.getElementById('againBtn');
   const restartBtn = document.getElementById('restartBtn');
+  const mobileControls = document.getElementById('mobileControls');
   const jumpBtn = document.getElementById('jumpBtn');
   const duckBtn = document.getElementById('duckBtn');
+  const boostBtn = document.getElementById('boostBtn');
   const bgm = document.getElementById('bgm');
   const failAudio = document.getElementById('failAudio');
   const boostAudio = document.getElementById('boostAudio');
@@ -91,6 +93,12 @@
     boostHeld: false,
   };
 
+  function updateMobileControlsVisibility() {
+    if (!mobileControls) return;
+    const shouldShow = game.state === STATE.RUNNING;
+    mobileControls.classList.toggle('controls-hidden', !shouldShow);
+  }
+
   function safePlay(audio) {
     if (!audio) return;
     const p = audio.play();
@@ -142,6 +150,7 @@
 
     startPanel.classList.add('hidden');
     gameOverPanel.classList.add('hidden');
+    updateMobileControlsVisibility();
 
     safeStop(boostAudio);
     safeStop(failAudio);
@@ -169,6 +178,7 @@
     gameOverPanel.classList.add('hidden');
     void gameOverPanel.offsetWidth;
     gameOverPanel.classList.remove('hidden');
+    updateMobileControlsVisibility();
   }
 
   function activateInvincible() {
@@ -415,7 +425,7 @@
           if (!ob.thrown && chaseScreenX + ob.w < -10) {
             ob.thrown = true;
             // 砖头落在张老师前方一段距离，成为必须跳过去的地面障碍。
-            spawnBrick(game.distance + player.x + rand(270, 360));
+            spawnBrick(game.distance + player.x + rand(560, 740));
             ob.remove = true;
           }
         }
@@ -903,6 +913,39 @@
   duckBtn.addEventListener('touchend', duckEnd, { passive: false });
   duckBtn.addEventListener('touchcancel', duckEnd, { passive: false });
 
+  const boostButtonStart = (e) => {
+    if (e) {
+      e.preventDefault();
+      if (e.currentTarget && e.pointerId !== undefined && e.currentTarget.setPointerCapture) {
+        try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+    }
+    input.boostHeld = true;
+    setBoosting(true);
+  };
+
+  const boostButtonEnd = (e) => {
+    if (e) {
+      e.preventDefault();
+      if (e.currentTarget && e.pointerId !== undefined && e.currentTarget.releasePointerCapture) {
+        try { e.currentTarget.releasePointerCapture(e.pointerId); } catch (_) {}
+      }
+    }
+    input.boostHeld = false;
+    setBoosting(false);
+  };
+
+  if (boostBtn) {
+    boostBtn.addEventListener('pointerdown', boostButtonStart);
+    boostBtn.addEventListener('pointerup', boostButtonEnd);
+    boostBtn.addEventListener('pointercancel', boostButtonEnd);
+    boostBtn.addEventListener('lostpointercapture', boostButtonEnd);
+
+    boostBtn.addEventListener('touchstart', boostButtonStart, { passive: false });
+    boostBtn.addEventListener('touchend', boostButtonEnd, { passive: false });
+    boostBtn.addEventListener('touchcancel', boostButtonEnd, { passive: false });
+  }
+
   const boostDown = (e) => {
     if (e.target.closest('.panel') || e.target.closest('.mobile-controls')) return;
     if (game.state === STATE.RUNNING) {
@@ -923,5 +966,6 @@
     setCrouch(false);
   });
 
+  updateMobileControlsVisibility();
   drawReadyScreen();
 })();

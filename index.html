@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>张老师快跑</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mobile-controls.css" />
 </head>
 <body>
   <main class="game-shell">
@@ -28,7 +29,7 @@
           <span>Shift / 长按画面 加速</span>
           <span>紫色嘴唇 = 5s 无敌</span>
         </div>
-        <p class="note">音频文件：<code>assets/audio/1.MP3</code> 背景音乐，<code>2.MP3</code> 失败结束语 / 加速开始语音。手机端会自动模拟横屏显示。</p>
+        <p class="note">音频文件：<code>assets/audio/1.mp3</code> 背景音乐，<code>2.mp3</code> 失败结束语 / 加速开始语音。手机端会自动模拟横屏显示，按钮会贴在横屏画面的左右两侧。</p>
         <button id="startBtn" type="button" class="primary-btn">开始游戏</button>
       </div>
 
@@ -41,15 +42,28 @@
       </div>
     </section>
 
-    <section class="mobile-controls" aria-label="移动端操作按钮">
-      <button id="jumpBtn" type="button">跳跃</button>
-      <button id="duckBtn" type="button">下蹲</button>
+    <section class="mobile-controls controls-hidden" id="mobileControls" aria-label="移动端操作按钮">
+      <button id="boostBtn" type="button" class="mc-btn mc-btn-boost">
+        <span class="mc-btn-sub">HOLD</span>
+        <span class="mc-btn-main">加速</span>
+      </button>
+
+      <div class="mc-right-stack">
+        <button id="jumpBtn" type="button" class="mc-btn mc-btn-jump">
+          <span class="mc-btn-sub">TAP</span>
+          <span class="mc-btn-main">跳跃</span>
+        </button>
+        <button id="duckBtn" type="button" class="mc-btn mc-btn-duck">
+          <span class="mc-btn-sub">HOLD</span>
+          <span class="mc-btn-main">下蹲</span>
+        </button>
+      </div>
     </section>
   </main>
 
-  <audio id="bgm" src="assets/audio/1.MP3" loop preload="auto"></audio>
-  <audio id="failAudio" src="assets/audio/2.MP3" preload="auto"></audio>
-  <audio id="boostAudio" src="assets/audio/2.MP3" preload="auto"></audio>
+  <audio id="bgm" src="assets/audio/1.mp3" loop preload="auto"></audio>
+  <audio id="failAudio" src="assets/audio/2.mp3" preload="auto"></audio>
+  <audio id="boostAudio" src="assets/audio/2.mp3" preload="auto"></audio>
 
   <script src="game.js"></script>
 </body>
